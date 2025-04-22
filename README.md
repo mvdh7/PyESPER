@@ -97,7 +97,7 @@ n*e:  Total number of estimates returned as an n by e array
 ##### DesiredVariables (required 1 by p list, where p specifies the desired variable(x) in string format): 
 List elements specify which variables will be returned. Excepting unitless pH, all outputs are in micromol per kg seawater. Naming of list elements must be exactly as demonstrated below (excamples ["TA"], ["DIC", "phosphate", "oxygen"]). 
 
-###### Desired Variable | List Element Name (String Format):
+<ins>Desired Variable | List Element Name (String Format):</ins>
 Total Titration Seawater Alkalinity | TA
 
 Total Dissolved Inorganic Carbon | DIC
