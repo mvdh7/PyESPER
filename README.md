@@ -147,7 +147,7 @@ List indicating which equations will be used to estimate desired variables. If [
 
 #### Optional Inputs
 
-##### MeasUncerts (Optional n by y dictionary or 1 by y dictionary, default: [0.003 S, 0.003 degrees C T or potential temperature, 2% phosphate, 2% nitrate, 2% silicate, 1% AOU or O2]): 
+##### MeasUncerts (Optional n by y dictionary or 1 by y dictionary, default: [0.003 S, 0.003 degrees C T or potential temperature, 2% phosphate, 2% nitrate, 2% silicate, 1% AOU or O<sub>2</sub>]): 
 Dictionary of measurement uncertainties (see 'PredictorMeasurements' for units). Providing these estimates will improve PyESPER estimate uncertainties. Measurement uncertainties are a small p0art of PyESPER estimate uncertainties for WOCE-quality measurements. However, estimate uncertainty scales with measurement uncertainty, so it is recommended that measurement uncertainties be specified for sensor measurements. If this optional input argument is not provided, the default WOCE-quality uncertainty is assumed. If a 1 by y array is provided then the uncertainty estimates are assumed to apply uniformly to all input parameter measurements. Uncertainties should be presented with the following naming convention:
 
 <ins>Input Uncertainties: Key Name</ins>
@@ -162,7 +162,7 @@ Dictionary of measurement uncertainties (see 'PredictorMeasurements' for units).
 
 -Silicate: silicate_u
 
--O2: oxygen_u
+-Oxygen: oxygen_u
 
 ##### pHCalcTF (Optional boolean, default false):
 If set to true, PyESPER will recalculate the pH to be a better estimate of what the seawater pH value would be if calculated from TA and DIC instead of measured with purified m-cresol dye. This is arguably also a better estimate of the pH than would be obtained from pre-2011 measurements with impure dyes. See LIPHR paper for details. 
