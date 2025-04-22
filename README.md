@@ -98,6 +98,7 @@ n*e:  Total number of estimates returned as an n by e array
 List elements specify which variables will be returned. Excepting unitless pH, all outputs are in micromol per kg seawater. Naming of list elements must be exactly as demonstrated below (excamples ["TA"], ["DIC", "phosphate", "oxygen"]). 
 
 <ins>Desired Variable | List Element Name (String Format):</ins>
+
 Total Titration Seawater Alkalinity | TA
 
 Total Dissolved Inorganic Carbon | DIC
@@ -148,7 +149,9 @@ List indicating which equations will be used to estimate desired variables. If [
 
 ##### MeasUncerts (Optional n by y dictionary or 1 by y dictionary, default: [0.003 S, 0.003 degrees C T or potential temperature, 2% phosphate, 2% nitrate, 2% silicate, 1% AOU or O2]): 
 Dictionary of measurement uncertainties (see 'PredictorMeasurements' for units). Providing these estimates will improve PyESPER estimate uncertainties. Measurement uncertainties are a small p0art of PyESPER estimate uncertainties for WOCE-quality measurements. However, estimate uncertainty scales with measurement uncertainty, so it is recommended that measurement uncertainties be specified for sensor measurements. If this optional input argument is not provided, the default WOCE-quality uncertainty is assumed. If a 1 by y array is provided then the uncertainty estimates are assumed to apply uniformly to all input parameter measurements. Uncertainties should be presented with the following naming convention:
+
 <ins>Input Uncertainties: Key Name</ins>
+
 -Salinity: sal_u
 
 -Temperature: temp_u
