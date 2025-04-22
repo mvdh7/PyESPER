@@ -101,13 +101,13 @@ Coordinates at which estimates are desired. The keys should be longitude (degree
 ##### PredictorMeasurements (required n by y dictionary, where n are the number of desired estimate locations and y are the dictionary keys representing each possible input): 
 Parameter measurements that will be used to estimate desired variables. Concentrations should be expressed as micromol per kg seawater unless PerKgSwTF is set to false in which case they should be expressed as micromol per L, temperature should be expressed as degrees C, and salinity should be specified with the unitless convention. NaN inputs are acceptable, but will lead to NaN estimates for any equations that depend on that parameter. The key order (y columns) is arbitrary, but naming of keys must adhere to the following convention (ex: PredictorMeasurements={"salinity": [35, 34.1, 32, 33], "temperature": [0.1, 10, 0.5, 2], "oxygen": [202.3, 214.7, 220.5, 224.2]} or PredictorMeasurements={'salinity': sal, 'temperature: temp, 'phosphate': phos, 'nitrate': nitrogen} when referring to predefined lists or numpy arrays of measurements:
 
-###### Input Parameter | Dictionary Key Name
-Salinity | salinity
-Temperature | temperature
-Phosphate | phosphate
-Nitrate | nitrate
-Silicate | silicate
-O2 | oxygen
+###### Input Parameter: Dictionary Key Name
+Salinity: salinity
+Temperature: temperature
+Phosphate: phosphate
+Nitrate: nitrate
+Silicate: silicate
+O2: oxygen
 
 #### Optional Inputs:
 All remaining inputs must be specified as sequential input argument pairs (e.g., "EstDates"=EstDates when referring to a predefined list of dates, 'Equations'=[1:16], pHCalcTF=True, etc.)
