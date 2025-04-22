@@ -97,21 +97,21 @@ n*e:  Total number of estimates returned as an n by e array
 ##### DesiredVariables (required 1 by p list, where p specifies the desired variable(x) in string format): 
 List elements specify which variables will be returned. Excepting unitless pH, all outputs are in micromol per kg seawater. Naming of list elements must be exactly as demonstrated below (excamples ["TA"], ["DIC", "phosphate", "oxygen"]). 
 
-<ins>Desired Variable | List Element Name (String Format):</ins>
+<ins>Desired Variable: List Element Name (String Format):</ins>
 
-Total Titration Seawater Alkalinity | TA
+Total Titration Seawater Alkalinity: TA
 
-Total Dissolved Inorganic Carbon | DIC
+Total Dissolved Inorganic Carbon: DIC
 
-in situ pH on the total scale | pH
+in situ pH on the total scale: pH
 
-Phosphate | phosphate
+Phosphate: phosphate
 
-Nitrate | nitrate
+Nitrate: nitrate
 
-Silicate | silicate
+Silicate: silicate
 
-Dissolved Oxygen (O2)  oxygen
+Dissolved Oxygen (O<sub>2</sub>):  oxygen
 
 ##### Path (required string):
 Path directing Python to the location of saved/downloaded LIR files on the user's computer (e.g., '/Users/lara/Documents/Python'). 
@@ -122,7 +122,7 @@ Coordinates at which estimates are desired. The keys should be longitude (degree
 ##### PredictorMeasurements (required n by y dictionary, where n are the number of desired estimate locations and y are the dictionary keys representing each possible input): 
 Parameter measurements that will be used to estimate desired variables. Concentrations should be expressed as micromol per kg seawater unless PerKgSwTF is set to false in which case they should be expressed as micromol per L, temperature should be expressed as degrees C, and salinity should be specified with the unitless convention. NaN inputs are acceptable, but will lead to NaN estimates for any equations that depend on that parameter. The key order (y columns) is arbitrary, but naming of keys must adhere to the following convention (ex: PredictorMeasurements={"salinity": [35, 34.1, 32, 33], "temperature": [0.1, 10, 0.5, 2], "oxygen": [202.3, 214.7, 220.5, 224.2]} or PredictorMeasurements={'salinity': sal, 'temperature: temp, 'phosphate': phos, 'nitrate': nitrogen} when referring to predefined lists or numpy arrays of measurements:
 
-###### Input Parameter: Dictionary Key Name
+<ins>Input Parameter: Dictionary Key Name</ins>
 
 -Salinity: salinity
 
@@ -134,7 +134,7 @@ Parameter measurements that will be used to estimate desired variables. Concentr
 
 -Silicate: silicate
 
--O2: oxygen
+-O<sub>2</sub>: oxygen
 
 #### Optional Inputs:
 All remaining inputs must be specified as sequential input argument pairs (e.g., "EstDates"=EstDates when referring to a predefined list of dates, 'Equations'=[1:16], pHCalcTF=True, etc.)
