@@ -29,7 +29,8 @@ The routines predict coefficient and intercept values for a set of up to 16 equa
 15.   S, B
 16.   S
 
-<ins>DesiredVariable: A, B, C</ins>
+###<ins>DesiredVariable: A, B, C</ins>
+'''
 TA: nitrate, oxygen, silicate
 DIC: nitrate, oxygen, silicate
 pH: nitrate, oxygen, silicate
@@ -37,6 +38,7 @@ phosphate: nitrate, oxygen, silicate
 nitrate: phosphate, oxygen, silicate
 silicate: phosphate, oxygen, nitrate
 oxygen: phosphate, nitrate, silicate
+'''
 
 ### Documentation and citations:
 LIARv1: Carter et al., 2016, doi: 10.1002/lom3.10087
