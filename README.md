@@ -74,7 +74,7 @@ These are the first version of Python implementation of ESPERv1.1, which is an a
 ### Requirements
 For the present version, you will need to download the [PyESPER_Final.ipynb](https://github.com/LarissaMDias/PyESPER/blob/main/PyESPER_Final.ipynb) along with the affiliated neural network files within the [NeuralNetworks](https://github.com/LarissaMDias/PyESPER/tree/main/NeuralNetworks) folder, and the [SimpleCantEstimateLR_full.csv](https://github.com/LarissaMDias/PyESPER/blob/main/SimpleCantEstimateLR_full.csv) file for estimates involving anthropogenic carbon calculations (pH and dissolved inorganic carbon). 
 
-To run the Jupyter Notebooks, you will need numpy, pandas, seawater, scipy, time, matplotlib, decimal, PyCO2SYS, and math packages.
+To run the Jupyter Notebooks, you will need numpy, pandas, seawater, scipy, time, matplotlib, decimal, PyCO2SYS, time, decimal, importlib, statistics, and math packages.
 
 Please refer to the examples Notebooks that you can try without needing to install anything.
 
