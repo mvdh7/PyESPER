@@ -83,9 +83,13 @@ The measurements are provided in molar units or if potential temperature or AOU 
 
 #### Input/Output dimensions:
 p:    Integer number of desired property estimate types (e.g., TA, pH, NO3-)
+
 n:    Integer number of desired estimate locations
+
 e:    Integer number of equations used at each location
-y:    Integer number of parameter measurement types provided by the user.
+
+y:    Integer number of parameter measurement types provided by the user
+
 n*e:  Total number of estimates returned as an n by e array
 
 #### Required Inputs:
