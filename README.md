@@ -10,6 +10,34 @@ PyESPER is a Python implementation of MATLAB Empirical Seawater Property Estimat
 2. Neural networks (NNs)
 3. Mixed
 
+The routines predict coefficient and intercept values for a set of up to 16 equations, as follows:
+(S=salinity, T=temperature, oxygen=dissolved oxygen molecule... see "PredictorMeasurements" for units). 
+1.    S, T, A, B, C
+2.    S, T, A, C
+3.    S, T, B, C
+4.    S, T, C
+5.    S, T, A, B
+6.    S, T, A
+7.    S, T, B
+8.    S, T
+9.    S, A, B, C
+10.   S, A, C
+11.   S, B, C
+12.   S, C
+13.   S, A, B
+14.   S, A
+15.   S, B
+16.   S
+
+DesiredVariable | A | B | C
+TA | nitrate | oxygen | silicate
+DIC | nitrate | oxygen | silicate
+pH | nitrate | oxygen | silicate
+phosphate | nitrate | oxygen | silicate
+nitrate | phosphate | oxygen | silicate
+silicate | phosphate | oxygen | nitrate
+oxygen | phosphate | nitrate | silicate
+
 ### Documentation and citations:
 LIARv1: Carter et al., 2016, doi: 10.1002/lom3.10087
 LIARv2, LIPHR, LINR citation: Carter et al., 2018, doi: 10.1002/lom3.10232
@@ -48,15 +76,14 @@ n*e:  Total number of estimates returned as an n by e array
 ##### DesiredVariables (required 1 by p list, where p specifies the desired variable(x) in string format): 
 List elements specify which variables will be returned. Excepting unitless pH, all outputs are in micromol per kg seawater. Naming of list elements must be exactly as demonstrated below (excamples ["TA"], ["DIC", "phosphate", "oxygen"]). 
 
-Desired Variable:                                | List Element Name (String Format):
-************************************************************************************************
-Total Titration Seawater Alkalinity              | TA
-Total Dissolved Inorganic Carbon                 | DIC
-in situations pH on the total scale              | pH
-Phosphate                                        | phosphate
-Nitrate                                          | nitrate
-Silicate                                         | silicate
-Dissolved Oxygen (O2)                            | oxygen
+###### Desired Variable | List Element Name (String Format):
+Total Titration Seawater Alkalinity | TA
+Total Dissolved Inorganic Carbon | DIC
+in situ pH on the total scale | pH
+Phosphate | phosphate
+Nitrate | nitrate
+Silicate | silicate
+Dissolved Oxygen (O2)  oxygen
 
 ##### Path (required string):
 Path directing Python to the location of saved/downloaded LIR files on the user's computer (e.g., '/Users/lara/Documents/Python'). 
@@ -67,13 +94,20 @@ Coordinates at which estimates are desired. The keys should be longitude (degree
 ##### PredictorMeasurements (required n by y dictionary, where n are the number of desired estimate locations and y are the dictionary keys representing each possible input): 
 Parameter measurements that will be used to estimate desired variables. Concentrations should be expressed as micromol per kg seawater unless PerKgSwTF is set to false in which case they should be expressed as micromol per L, temperature should be expressed as degrees C, and salinity should be specified with the unitless convention. NaN inputs are acceptable, but will lead to NaN estimates for any equations that depend on that parameter. The key order (y columns) is arbitrary, but naming of keys must adhere to the following convention (ex: PredictorMeasurements={"salinity": [35, 34.1, 32, 33], "temperature": [0.1, 10, 0.5, 2], "oxygen": [202.3, 214.7, 220.5, 224.2]} or PredictorMeasurements={'salinity': sal, 'temperature: temp, 'phosphate': phos, 'nitrate': nitrogen} when referring to predefined lists or numpy arrays of measurements:
 
-Input Parameter:                       | Dictionary Key Name
-****************************************************************************
-Salinity                               | salinity
-Temperature                            | tempperature
-Phosphate                              | phosphate
-Nitrate                                | nitrate
-Silicate                               | silicate
-O2                                     | oxygen
+###### Input Parameter | Dictionary Key Name
+Salinity | salinity
+Temperature | temperature
+Phosphate | phosphate
+Nitrate | nitrate
+Silicate | silicate
+O2 | oxygen
 
+#### Optional Inputs:
+All remaining inputs must be specified as sequential input argument pairs (e.g., "EstDates"=EstDates when referring to a predefined list of dates, 'Equations'=[1:16], pHCalcTF=True, etc.)
+
+##### EstDates (optional but recommended n by 1 list or 1 by 1 value, default 2002.0):
+A list of decimal dates for the estimates (e.g., July 1 2020 would be 2020.5). If only a single date is supplied that value is used for all estimates. It is highly recommended that date(s) be provided for estimates of DIC and pH. This version of the code will accept 1 by n inputs as well. 
+
+##### Equations (optional 1 by e list, default [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]):
+List indicating which equations will be used to estimate desired variables. If [] is input or the input is not specified then all 16 equations will be used. 
 #### Optional Inputs
