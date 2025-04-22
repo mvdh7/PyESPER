@@ -99,11 +99,17 @@ List elements specify which variables will be returned. Excepting unitless pH, a
 
 ###### Desired Variable | List Element Name (String Format):
 Total Titration Seawater Alkalinity | TA
+
 Total Dissolved Inorganic Carbon | DIC
+
 in situ pH on the total scale | pH
+
 Phosphate | phosphate
+
 Nitrate | nitrate
+
 Silicate | silicate
+
 Dissolved Oxygen (O2)  oxygen
 
 ##### Path (required string):
