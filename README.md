@@ -61,7 +61,13 @@ ESPER_NN is inspired by CANYON-B, which also uses neural networks:
 Bittig et al., 2018, doi: 10.3389/fmars.2018.00328
 
 ### PyESPER_LIR 
-These are the first version of Python interpretation of LIRv.3; ESPERv1.1, which use collections of interpolated linear networks. 
+These are the first version of Python implementation of LIRv.3; ESPERv1.1, which use collections of interpolated linear networks. 
+
+### PyESPER_NN
+These are the first version of Python implementation of ESPERv1.1, which uses neural networks. 
+
+### PyESPER_Mixed
+These are the first version of Python implementation of ESPERv1.1, which is an average of the LIR and NN estimates. 
 
 ## Basic Use
 
