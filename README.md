@@ -102,12 +102,18 @@ Coordinates at which estimates are desired. The keys should be longitude (degree
 Parameter measurements that will be used to estimate desired variables. Concentrations should be expressed as micromol per kg seawater unless PerKgSwTF is set to false in which case they should be expressed as micromol per L, temperature should be expressed as degrees C, and salinity should be specified with the unitless convention. NaN inputs are acceptable, but will lead to NaN estimates for any equations that depend on that parameter. The key order (y columns) is arbitrary, but naming of keys must adhere to the following convention (ex: PredictorMeasurements={"salinity": [35, 34.1, 32, 33], "temperature": [0.1, 10, 0.5, 2], "oxygen": [202.3, 214.7, 220.5, 224.2]} or PredictorMeasurements={'salinity': sal, 'temperature: temp, 'phosphate': phos, 'nitrate': nitrogen} when referring to predefined lists or numpy arrays of measurements:
 
 ###### Input Parameter: Dictionary Key Name
-Salinity: salinity
-Temperature: temperature
-Phosphate: phosphate
-Nitrate: nitrate
-Silicate: silicate
-O2: oxygen
+
+-Salinity: salinity
+
+-Temperature: temperature
+
+-Phosphate: phosphate
+
+-Nitrate: nitrate
+
+-Silicate: silicate
+
+-O2: oxygen
 
 #### Optional Inputs:
 All remaining inputs must be specified as sequential input argument pairs (e.g., "EstDates"=EstDates when referring to a predefined list of dates, 'Equations'=[1:16], pHCalcTF=True, etc.)
@@ -117,4 +123,43 @@ A list of decimal dates for the estimates (e.g., July 1 2020 would be 2020.5). I
 
 ##### Equations (optional 1 by e list, default [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]):
 List indicating which equations will be used to estimate desired variables. If [] is input or the input is not specified then all 16 equations will be used. 
+
 #### Optional Inputs
+
+##### MeasUncerts (Optional n by y dictionary or 1 by y dictionary, default: [0.003 S, 0.003 degrees C T or potential temperature, 2% phosphate, 2% nitrate, 2% silicate, 1% AOU or O2]): 
+Dictionary of measurement uncertainties (see 'PredictorMeasurements' for units). Providing these estimates will improve PyESPER estimate uncertainties. Measurement uncertainties are a small p0art of PyESPER estimate uncertainties for WOCE-quality measurements. However, estimate uncertainty scales with measurement uncertainty, so it is recommended that measurement uncertainties be specified for sensor measurements. If this optional input argument is not provided, the default WOCE-quality uncertainty is assumed. If a 1 by y array is provided then the uncertainty estimates are assumed to apply uniformly to all input parameter measurements. Uncertainties should be presented with the following naming convention:
+<ins>Input Uncertainties: Key Name</ins>
+-Salinity: sal_u
+
+-Temperature: temp_u
+
+-Phosphate: phosphate_u
+
+-Nitrate: nitrate_u
+
+-Silicate: silicate_u
+
+-O2: oxygen_u
+
+##### pHCalcTF (Optional boolean, default false):
+If set to true, PyESPER will recalculate the pH to be a better estimate of what the seawater pH value would be if calculated from TA and DIC instead of measured with purified m-cresol dye. This is arguably also a better estimate of the pH than would be obtained from pre-2011 measurements with impure dyes. See LIPHR paper for details. 
+
+##### PerKgSwTF (Optional boolean, default true):
+Many sensors provide measurements in micromol per L (molarity) instead of micromol per kg seawater. Indicate false if provided measurements are expressed in molar units (concentrations must be micromol per L if so). Outputs will remain in molal units regardless. 
+
+##### VerboseTF (Optional boolean, default true):
+Setting this to false will reduce the number of updates, warnings, and errors printed by PyESPER. An additional step can be taken before executing the PyESPER function (see examples) that will further reduce updates, warnings, and errors, if desired.
+
+#### Outputs:
+
+##### Estimates: 
+An n by e pandas DataFrame of estimates specific to the coordinates and parameter measurements provided as inputs. Units are micromoles per kg (equivalent to the deprecated microeq per kg seawater). Column names are the unique desired variable-equation combinations requested by the user. 
+
+##### Coefficients (LIRs only):
+An n by e pandas DataFrame of equation intercepts and coefficients specific to the coordinates and parameter measurements provided as inputs. Column names are the unique desired variable-equation combinations requested by the user. 
+
+##### Uncertainties: 
+An n by e dictionary of uncertainty estimates specific to the coordinates, parameter measurements, and parameter uncertaineis provided. Units are micromoles per kg (equivalent to the deprecated microeq per kg seawater). Column names are the unique desired variable-equation combinations requested by the user. 
+
+#### Missing Data:
+Should be indicated with a NaN. A NaN coordinate will yield NaN estimates for all equations at that coordinate. A NaN parameter value will yield NaN esitmates for all equations that require that parameter. 
