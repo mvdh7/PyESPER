@@ -47,12 +47,16 @@ The routines predict coefficient and intercept values for a set of up to 16 equa
 
 ### Documentation and citations:
 LIARv1: Carter et al., 2016, doi: 10.1002/lom3.10087
+
 LIARv2, LIPHR, LINR citation: Carter et al., 2018, doi: 10.1002/lom3.10232
+
 LIPR, LISIR, LIOR, first described/used: Carter et al., 2021, doi: 10.1002/lom3/10232
+
 LIRv3 and ESPER_NN (ESPERv1.1): Carter, 2021, doi: 10.5281/ZENODO.5512697
 
 PyESPER is a Python implementation is ESPER:
 Carter et al., 2021, doi: 10.1002/lom3/10461
+
 ESPER_NN is inspired by CANYON-B, which also uses neural networks:
 Bittig et al., 2018, doi: 10.3389/fmars.2018.00328
 
