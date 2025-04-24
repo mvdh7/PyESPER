@@ -11,7 +11,7 @@ Mat_fullgrid folder:
 Folder of .mat files needed for each variable to be estimated, necessary for PyESPER_LIR or PyESPER_Mixed
     
 NeuralNetworks folder:
-Folder of .py files needed for each variable to be estimated, necessary for running PyESPER_NN or PyESPER_Mixed
+Folder of .py files needed for each variable to be estimated, necessary for running PyESPER_NN or PyESPER_Mixed. These currently must be unpacked into the main directory. 
 Note: A pickled version of these files is in progress, which should make things easier. 
     
 Uncertainty_Polys folder:
