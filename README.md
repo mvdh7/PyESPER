@@ -7,22 +7,18 @@ This is a preliminary set of instructions for use of the [PyESPER](https://githu
 ## Quick Start
 Please see the associated [Examples](https://github.com/LarissaMDias/PyESPER/blob/main/Examples.ipynb) JupyterNotebook for a quick example of use of the preliminary PyESPER.ipynb. To run this code, you will need to first make sure that you have downloaded the required associated files from the GitHub page as follows. You will also need to ensure that the installed package [requirements](https://github.com/LarissaMDias/PyESPER/blob/main/requirements.txt) are met. Please edit the downloaded Examples notebook to use the path you specify on your computer. The example uses the [GLODAPv2.2023](https://glodap.info) dataset.
 
--Mat_fullgrid files: 
-
-    Folder of .mat files needed for each variable to be estimated, necessary for PyESPER_LIR or PyESPER_Mixed
+Mat_fullgrid folder: 
+Folder of .mat files needed for each variable to be estimated, necessary for PyESPER_LIR or PyESPER_Mixed
     
--NeuralNetworks
-
-    Folder of .py files needed for each variable to be estimated, necessary for running PyESPER_NN or PyESPER_Mixed
-    Note: A pickled version of these files is in progress, which should make things easier. 
+NeuralNetworks folder:
+Folder of .py files needed for each variable to be estimated, necessary for running PyESPER_NN or PyESPER_Mixed
+Note: A pickled version of these files is in progress, which should make things easier. 
     
--Uncertainty_Polys
-
-    Folder of .mat files needed for ach variable to be estimated, necessary for running PyESPER_NN or PyESPER_Mixed
+Uncertainty_Polys folder:
+Folder of .mat files needed for ach variable to be estimated, necessary for running PyESPER_NN or PyESPER_Mixed
     
--SimpleCantEstimateLR.csv
-
-    Necessary for estimating anthropogenic carbon component for pH or DIC
+SimpleCantEstimateLR.csv:
+File necessary for estimating anthropogenic carbon component for pH or DIC
     
 ## Introduction
 PyESPER is a Python implementation of MATLAB Empirical Seawater Property Estimation Routines ([ESPERs](https://github.com/BRCScienceProducts/ESPER)), and the present version consists of a preliminary Jupyter Notebook which implements these routines. These routines provide estimates of seawater biogeochemical properties at user-provided sets of coordinates, depth, and available biogeochemical properties. Three algorithm options are available through these routines: 
