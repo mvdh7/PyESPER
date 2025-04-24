@@ -2,8 +2,21 @@
 version 1.01.01
 
 <ins>Note:</ins>
-This is a preliminary set of instructions for use of the PyESPER_Final.ipynb Jupyter notebook, for which the accompanying manuscript is under review. The accompanying Python package is being created and will be released soon. This package is being developed in parallel with [pyTRACE](https://github.com/d-sandborn/pyTRACE/tree/main).
+This is a preliminary set of instructions for use of the [PyESPER](https://github.com/LarissaMDias/PyESPER/blob/main/PyESPER.ipynb) Jupyter notebook, for which the accompanying manuscript is under review. The accompanying Python package is being created and will be released soon. This package is being developed in parallel with [pyTRACE](https://github.com/d-sandborn/pyTRACE/tree/main).
 
+## Quick Start
+Please see the associated [Examples](https://github.com/LarissaMDias/PyESPER/blob/main/Examples.ipynb) JupyterNotebook for a quick example of use of this preliminary .ipynb. To run this .ipynb, you will need to first make sure that you have downloaded the required associated files from the GitHub page as follows. You will also need to ensure that the installed package [requirements](https://github.com/LarissaMDias/PyESPER/blob/main/requirements.txt) are met.
+
+-Mat_fullgrid files: 
+    Folder of .mat files needed for each variable to be estimated, necessary for PyESPER_LIR or PyESPER_Mixed
+-NeuralNetworks
+    Folder of .py files needed for each variable to be estimated, necessary for running PyESPER_NN or PyESPER_Mixed
+    Note: A pickled version of these files is in progress, which should make things easier. 
+-Uncertainty_Polys
+    Folder of .mat files needed for ach variable to be estimated, necessary for running PyESPER_NN or PyESPER_Mixed
+-SimpleCantEstimateLR.csv
+    Necessary for estimating anthropogenic carbon component for pH or DIC
+    
 ## Introduction
 PyESPER is a Python implementation of MATLAB Empirical Seawater Property Estimation Routines ([ESPERs](https://github.com/BRCScienceProducts/ESPER)), and the present version consists of a preliminary Jupyter Notebook which implements these routines. These routines provide estimates of seawater biogeochemical properties at user-provided sets of coordinates, depth, and available biogeochemical properties. Three algorithm options are available through these routines: 
 
