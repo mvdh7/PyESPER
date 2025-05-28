@@ -708,8 +708,8 @@ def PyESPER_NN(
         # Loading the data
         def fetch_data(DesiredVariables):
             for v in DesiredVariables:
-                fname = os.path.joinf(
-                    Path, "PyESPER/Uncertainty_Polys/NN_files_{v}_Unc_Poly.mat"
+                fname = os.path.join(
+                    Path, f"Uncertainty_Polys/NN_files_{v}_Unc_Poly.mat"
                 )
                 NNs = loadmat(fname)
                 Polys, UncGrid = NNs["Polys"][0][0], NNs["UncGrid"][0][0]

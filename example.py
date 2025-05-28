@@ -45,7 +45,7 @@ MeasUncerts = {
 }
 
 
-Path = "/Users/matthew/github/LarissaMDias/"
+Path = ""
 
 EstimatesNN, UncertaintiesNN = PyESPER_NN(
     ["DIC"],

@@ -680,18 +680,10 @@ def PyESPER_LIR(
 
         def fetch_data(DesiredVariables):
             for v in DesiredVariables:
-                fname1 = os.path.join(
-                    Path, f"PyESPER/Mat_fullgrid/LIR_files_{v}_fullCs1.mat"
-                )
-                fname2 = os.path.join(
-                    Path, f"PyESPER/Mat_fullgrid/LIR_files_{v}_fullCs2.mat"
-                )
-                fname3 = os.path.join(
-                    Path, f"PyESPER/Mat_fullgrid/LIR_files_{v}_fullCs3.mat"
-                )
-                fname4 = os.path.join(
-                    Path, f"PyESPER/Mat_fullgrid/LIR_files_{v}_fullGrids.mat"
-                )
+                fname1 = os.path.join(Path, f"Mat_fullgrid/LIR_files_{v}_fullCs1.mat")
+                fname2 = os.path.join(Path, f"Mat_fullgrid/LIR_files_{v}_fullCs2.mat")
+                fname3 = os.path.join(Path, f"Mat_fullgrid/LIR_files_{v}_fullCs3.mat")
+                fname4 = os.path.join(Path, f"Mat_fullgrid/LIR_files_{v}_fullGrids.mat")
 
                 Cs1 = loadmat(fname1)
                 Cs2 = loadmat(fname2)
