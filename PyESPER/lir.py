@@ -181,18 +181,20 @@ def PyESPER_LIR(DesiredVariables, Path, OutputCoordinates={}, PredictorMeasureme
     """
 
      # Importing packages
+    import decimal
+    import math
+    import os
+    import time
+
+    import matplotlib.path as mpltPath
     import numpy as np
     import pandas as pd
-    import seawater as sw
-    from scipy.io import loadmat
-    import time
-    import scipy.interpolate
-    from scipy.spatial import Delaunay
-    import matplotlib.path as mpltPath
-    import decimal
     import PyCO2SYS as pyco2
-    import math
+    import scipy.interpolate
+    import seawater as sw
     from scipy.interpolate import griddata
+    from scipy.io import loadmat
+    from scipy.spatial import Delaunay
 
      # Starting the timer
     tic = time.perf_counter() 
@@ -586,11 +588,10 @@ def PyESPER_LIR(DesiredVariables, Path, OutputCoordinates={}, PredictorMeasureme
         AAIndsCs, GridCoords, Cs = {}, {}, {}
         def fetch_data (DesiredVariables):
             for v in DesiredVariables:               
-                P = Path
-                fname1 = f"{P}/PyESPER/full_Grid_LIRs/LIR_files_{v}_fullCs1.mat"
-                fname2 = f"{P}/PyESPER/full_Grid_LIRs/LIR_files_{v}_fullCs2.mat"
-                fname3 = f"{P}/PyESPER/full_Grid_LIRs/LIR_files_{v}_fullCs3.mat"
-                fname4 = f"{P}/PyESPER/full_Grid_LIRs/LIR_files_{v}_fullGrids.mat"
+                fname1 = os.sep.join(Path, f"Mat_fullgrid/LIR_files_{v}_fullCs1.mat")
+                fname2 = os.sep.join(Path, f"Mat_fullgrid/LIR_files_{v}_fullCs2.mat")
+                fname3 = os.sep.join(Path, f"Mat_fullgrid/LIR_files_{v}_fullCs3.mat")
+                fname4 = os.sep.join(Path, f"Mat_fullgrid/LIR_files_{v}_fullGrids.mat")
 
                 Cs1 = loadmat(fname1)
                 Cs2 = loadmat(fname2)

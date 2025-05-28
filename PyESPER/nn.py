@@ -175,17 +175,19 @@ def PyESPER_NN(DesiredVariables, Path, OutputCoordinates={}, PredictorMeasuremen
     ************************************************************************* 
     """
 
-    import numpy as np
-    import time
-    from scipy.interpolate import griddata
-    import seawater as sw
-    import PyCO2SYS as pyco2
-    import pandas as pd
-    import math
-    from scipy.io import loadmat
-    import matplotlib.path as mpltPath
     import importlib
+    import math
+    import os
+    import time
     from statistics import mean
+
+    import matplotlib.path as mpltPath
+    import numpy as np
+    import pandas as pd
+    import PyCO2SYS as pyco2
+    import seawater as sw
+    from scipy.interpolate import griddata
+    from scipy.io import loadmat
     
     tic = time.perf_counter()
     
@@ -589,9 +591,7 @@ def PyESPER_NN(DesiredVariables, Path, OutputCoordinates={}, PredictorMeasuremen
         # Loading the data       
         def fetch_data (DesiredVariables):
             for v in DesiredVariables:
-                P = Path
-                fname = f"{P}/PyESPER/Uncertainty_Polys/NN_files_{v}_Unc_Poly.mat" # Change this according to your path
-                name = f"NN_files_{v}_Unc_Poly"
+                fname = os.path.join(Path, f"Uncertainty_Polys/NN_files_{v}_Unc_Poly.mat")
                 NNs = loadmat(fname)
                 Polys, UncGrid = NNs["Polys"][0][0], NNs["UncGrid"][0][0]
         
