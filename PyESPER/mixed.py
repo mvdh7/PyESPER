@@ -12,6 +12,10 @@ def PyESPER_Mixed(
     Please send questions or related requests about PyESPER to lmdias@uw.edu.
     *************************************************************************
     """
+    import time
+
+    from .lir import PyESPER_LIR
+    from .nn import PyESPER_NN
 
     tic = time.perf_counter()
 
