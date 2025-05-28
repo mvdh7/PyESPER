@@ -226,13 +226,13 @@ def PyESPER_NN(
     if any(d < 0 for d in OutputCoordinates["depth"]):
         print("Warning: Depth can not be negative.")
 
-    if any(l > 90 for l in OutputCoordinates["latitude"]):
+    if any(l > 90 for l in OutputCoordinates["latitude"]):  # noqa
         print(
             "Warning: A latitude >90 deg (N or S) has been detected. Verify latitude is entered correctly as an input."
         )
 
     # Checking for commonly used missing data indicator flags. Consider adding your commonly used flags here.
-    if any(l == -9999 or l == -9 or l == -1e20 for l in OutputCoordinates["latitude"]):
+    if any(l == -9999 or l == -9 or l == -1e20 for l in OutputCoordinates["latitude"]):  # noqa
         print(
             "Warning: A common non-NaN missing data indicator (e.g., -999, -9, -1e20) was detected in the input measurements provided. Missing data should be replaced with NaNs. Otherwise, ESPER will interpret your inputs at face value and give terrible estimates."
         )
@@ -242,8 +242,6 @@ def PyESPER_NN(
 
     # Reading dimensions of user input
     n = max(len(v) for v in OutputCoordinates.values())  # number of rows out
-    e = len(Equations)  # number of Equations
-    p = len(DesiredVariables)  # number of Variables
 
     # Checking kwargs for presence of VerboseTF and defining defaults as needed
     VerboseTF = kwargs.get("VerboseTF", True)
@@ -565,7 +563,7 @@ def PyESPER_NN(
         )
 
         product, product_processed, name = [], [], []
-        need, precode, preunc = {}, {}, {}
+        need, precode = {}, {}
 
         # Create a list of names and process products
         replacement_map = {
@@ -717,8 +715,6 @@ def PyESPER_NN(
             NN_data = [Polys, UncGrid]
             return NN_data
 
-        NN_data = fetch_data(DesiredVariables)
-
         # Assessing the locations/regions of user-provided outputcoordinates
         # Define Polygons
         LNAPoly = np.array(
@@ -842,7 +838,6 @@ def PyESPER_NN(
                 # Get the corresponding variables for the equation
                 variables = [locals()[var][name] for var in equation_map[e]]
                 P[name] = [[[cosd, sind, lat, depth] + variables]]
-                netname = ["1", "2", "3", "4"]
                 netstimateAtl, netstimateOther = [], []
                 for n in range(1, 5):
                     fOName = f"NeuralNetworks.ESPER_{v}_{e}_Other_{n}"
@@ -892,7 +887,7 @@ def PyESPER_NN(
             code[i]["SoAfrInds"] = df["SoAfrInds"]
 
         for codename, codedata in code.items():
-            Estatl, Estb, eb2, Estsat, esat2, esafr, esaf2 = [], [], [], [], [], [], []
+            Estatl, Estb, eb2, Estsat, esafr = [], [], [], [], []
             aainds, beringinds, satlinds, latitude, safrinds = (
                 codedata[key]
                 for key in ["AAInds", "BeringInds", "SAtlInds", "Latitude", "SoAfrInds"]
@@ -903,7 +898,7 @@ def PyESPER_NN(
                 for i, aa_ind in enumerate(aainds)
             ]
 
-            for l in range(0, len(Estatl)):
+            for l in range(0, len(Estatl)):  # noqa
                 repeated_values = (latitude[l] - 62.5) / 7.5
                 B = np.tile(repeated_values, (1, len(Equations)))
                 C = Esta[codename][l]
@@ -1310,16 +1305,16 @@ def PyESPER_NN(
     elif (
         "EstDates" not in kwargs
         and ("DIC" or "pH" in DesiredVariables)
-        and VerboseTF == True
-        and YouHaveBeenWarnedCanth == False
+        and VerboseTF
+        and not YouHaveBeenWarnedCanth
     ):
         print(
             "Warning: DIC or pH is a requested output but the user did not provide dates for the desired estimates.  The estimates will be specific to 2002.0 unless the optional EstDates input is provided (recommended)."
         )
         YouHaveBeenWarnedCanth = True
 
-    if kwargs.get("pHCalcTF") == True and "pH" in DesiredVariables:
-        if VerboseTF == True:
+    if kwargs.get("pHCalcTF") and "pH" in DesiredVariables:
+        if VerboseTF:
             print(
                 "Recalculating the pH to be appropriate for pH values calculated from TA and DIC."
             )

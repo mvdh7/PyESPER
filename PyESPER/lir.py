@@ -238,13 +238,13 @@ def PyESPER_LIR(
     if any(d < 0 for d in OutputCoordinates["depth"]):
         print("Warning: Depth can not be negative.")
 
-    if any(l > 90 for l in OutputCoordinates["latitude"]):
+    if any(l > 90 for l in OutputCoordinates["latitude"]):  # noqa
         print(
             "Warning: A latitude >90 deg (N or S) has been detected. Verify latitude is entered correctly as an input."
         )
 
     # Checking for commonly used missing data indicator flags. Consider adding your commonly used flags here.
-    if any(l == -9999 or l == -9 or l == -1e20 for l in OutputCoordinates["latitude"]):
+    if any(l == -9999 or l == -9 or l == -1e20 for l in OutputCoordinates["latitude"]):  # noqa
         print(
             "Warning: A common non-NaN missing data indicator (e.g., -999, -9, -1e20) was detected in the input measurements provided. Missing data should be replaced with NaNs. Otherwise, ESPER will interpret your inputs at face value and give terrible estimates."
         )
@@ -254,8 +254,6 @@ def PyESPER_LIR(
 
     # Reading dimensions of user input
     n = max(len(v) for v in OutputCoordinates.values())  # number of rows out
-    e = len(Equations)  # number of Equations
-    p = len(DesiredVariables)  # number of Variables
 
     # Checking kwargs for presence of VerboseTF and EstDates, and Equations, and defining defaults, as needed
     VerboseTF = kwargs.get("VerboseTF", True)
@@ -527,7 +525,7 @@ def PyESPER_LIR(
         )
 
         product, product_processed, name = [], [], []
-        need, precode, preunc = {}, {}, {}
+        need, precode = {}, {}
 
         # Create a list of names and process products
         replacement_map = {
@@ -906,7 +904,7 @@ def PyESPER_LIR(
         # Use boolean for AA or Else to separate coefficients into Atlantic or not
         GridCoords, Cs, AAInds = LIR_data[:3]
         DVs, CsVs = list(Cs.keys()), list(Cs.values())
-        ListVars, NumVars = list(range(len(AAInds))), len(AAInds)
+        ListVars = list(range(len(AAInds)))
         GridValues, AAIndValues = list(GridCoords.values())[0], list(AAInds.values())[0]
 
         lon_grid, lat_grid, d2d_grid, aainds = (
@@ -929,7 +927,7 @@ def PyESPER_LIR(
         ]
 
         Gdf, CsDesired = {}, {}
-        for l, name in zip(ListVars, DVs):
+        for l, name in zip(ListVars, DVs):  # noqa
             Cs2 = CsVs[:][l][:]
             for e in Equations:
                 CsName = f"Cs{name}{e}"
@@ -961,12 +959,7 @@ def PyESPER_LIR(
 
         # Interpolate
         Gkeys, Gvalues = list(Gdf.keys()), list(Gdf.values())
-        AAOkeys, AAOvalues, ElseOkeys, ElseOvalues = (
-            list(AAdata.keys()),
-            list(AAdata.values()),
-            list(Elsedata.keys()),
-            list(Elsedata.values()),
-        )
+        AAOvalues, ElseOvalues = (list(AAdata.values()), list(Elsedata.values()))
 
         def process_grid(grid_values, data_values):
             results = []
@@ -1307,7 +1300,7 @@ def PyESPER_LIR(
                 elAo2, elBo2 = elAo, elBo
 
                 elIntCT2, elTo2 = process_list(elIntCT, elTo)
-                elIntCC2, elCo2 = process_list(elIntC, elCo)
+                elIntCC2, elCo2 = process_list(elIntCC, elCo)
 
             elif is_key_14:
                 elIntCA2 = elIntCA
@@ -1372,7 +1365,7 @@ def PyESPER_LIR(
             # Store the results
             elInterpolants[key] = (elIal, elICS, elICT, elICA, elICB, elICC, elEst)
 
-        Data, Estimate, Coefficients, CoefficientsUsed = {}, {}, {}, {}
+        Estimate, Coefficients, CoefficientsUsed = {}, {}, {}
         for kcombo in AAdata.keys():
             AAdata[kcombo]["C0"] = aaInterpolants[kcombo][0]
             AAdata[kcombo]["CS"] = aaInterpolants[kcombo][1]
@@ -1479,9 +1472,6 @@ def PyESPER_LIR(
                         np.nan_to_num(duncdfs[key].fillna(-9999).astype(float))
                         for key in keys
                     ]
-
-                    C0u2 = Coefs["C0"] * 0
-                    Csum, DCsum = [], []
 
                     for cucombo in range(len(Coefs["CS"])):
                         s1 = (Coefs["CS"][cucombo] * USu[cucombo]) ** 2
@@ -1679,8 +1669,8 @@ def PyESPER_LIR(
     elif (
         "EstDates" not in kwargs
         and ("DIC" or "pH" in DesiredVariables)
-        and VerboseTF == True
-        and YouHaveBeenWarnedCanth == False
+        and VerboseTF
+        and not YouHaveBeenWarnedCanth
     ):
         print(
             "Warning: DIC or pH is a requested output but the user did not provide dates for the desired estimates.  The estimates "
@@ -1688,8 +1678,8 @@ def PyESPER_LIR(
         )
         YouHaveBeenWarnedCanth = True
 
-    if kwargs.get("pHCalcTF") == True and "pH" in DesiredVariables:
-        if VerboseTF == True:
+    if kwargs.get("pHCalcTF") and "pH" in DesiredVariables:
+        if VerboseTF:
             print(
                 "Recalculating the pH to be appropriate for pH values calculated from TA and DIC."
             )

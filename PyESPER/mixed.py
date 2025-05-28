@@ -14,6 +14,9 @@ def PyESPER_Mixed(
     """
     import time
 
+    import numpy as np
+    import pandas as pd
+
     from .lir import PyESPER_LIR
     from .nn import PyESPER_NN
 
