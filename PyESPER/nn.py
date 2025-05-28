@@ -229,8 +229,6 @@ def PyESPER_NN(DesiredVariables, Path, OutputCoordinates={}, PredictorMeasuremen
 
     # Reading dimensions of user input
     n = max(len(v) for v in OutputCoordinates.values()) # number of rows out
-    e = len(Equations) # number of Equations
-    p = len(DesiredVariables) # number of Variables
 
     # Checking kwargs for presence of VerboseTF and defining defaults as needed
     VerboseTF = kwargs.get("VerboseTF", True)
@@ -470,7 +468,7 @@ def PyESPER_NN(DesiredVariables, Path, OutputCoordinates={}, PredictorMeasuremen
             })
     
         product, product_processed, name = [], [], []
-        need, precode, preunc = {}, {}, {}
+        need, precode = {}, {}
     
         # Create a list of names and process products
         replacement_map = {
@@ -598,8 +596,6 @@ def PyESPER_NN(DesiredVariables, Path, OutputCoordinates={}, PredictorMeasuremen
             NN_data = [Polys, UncGrid]
             return NN_data
 
-        NN_data = fetch_data(DesiredVariables)
-
         # Assessing the locations/regions of user-provided outputcoordinates
         # Define Polygons
         LNAPoly = np.array([[300, 0], [260, 20], [240, 67], [260, 40], [361, 40], [361, 0], [298, 0]])
@@ -694,7 +690,6 @@ def PyESPER_NN(DesiredVariables, Path, OutputCoordinates={}, PredictorMeasuremen
                 # Get the corresponding variables for the equation
                 variables = [locals()[var][name] for var in equation_map[e]]
                 P[name] = [[[cosd, sind, lat, depth] + variables]]
-                netname = ["1", "2", "3", "4"]
                 netstimateAtl, netstimateOther = [], []
                 for n in range(1, 5):
                     fOName = f"NeuralNetworks.ESPER_{v}_{e}_Other_{n}"
@@ -737,7 +732,7 @@ def PyESPER_NN(DesiredVariables, Path, OutputCoordinates={}, PredictorMeasuremen
             code[i]["SoAfrInds"] = df["SoAfrInds"]
         
         for codename, codedata in code.items():
-            Estatl, Estb, eb2, Estsat, esat2, esafr, esaf2 = [], [], [], [], [], [], []
+            Estatl, Estb, eb2, Estsat, esafr = [], [], [], [], []
             aainds, beringinds, satlinds, latitude, safrinds = (
                 codedata[key] for key in ["AAInds", "BeringInds", "SAtlInds", "Latitude", "SoAfrInds"]
             )
@@ -1062,12 +1057,12 @@ def PyESPER_NN(DesiredVariables, Path, OutputCoordinates={}, PredictorMeasuremen
             if warning:
                 print(warning[0])
 
-    elif "EstDates" not in kwargs and ("DIC" or "pH" in DesiredVariables) and VerboseTF == True and YouHaveBeenWarnedCanth == False:
+    elif "EstDates" not in kwargs and ("DIC" or "pH" in DesiredVariables) and VerboseTF and not YouHaveBeenWarnedCanth:
         print("Warning: DIC or pH is a requested output but the user did not provide dates for the desired estimates.  The estimates will be specific to 2002.0 unless the optional EstDates input is provided (recommended).")
         YouHaveBeenWarnedCanth = True
 
-    if kwargs.get("pHCalcTF") == True and "pH" in DesiredVariables:
-        if VerboseTF == True:
+    if kwargs.get("pHCalcTF") and "pH" in DesiredVariables:
+        if VerboseTF:
             print("Recalculating the pH to be appropriate for pH values calculated from TA and DIC.")
         for combo, pH_values in zip(combos2, values2):
             if combo.startswith("pH"):
