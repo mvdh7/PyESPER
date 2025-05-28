@@ -1,7 +1,10 @@
 #%% EXAMPLE
-import pandas as pd 
 import numpy as np
 from scipy.io import loadmat
+
+from PyESPER.lir import PyESPER_LIR
+from PyESPER.mixed import PyESPER_Mixed
+from PyESPER.nn import PyESPER_NN
 
 data = loadmat("GLODAPv2.2022_Merged_Master_File.mat") 
 
@@ -44,8 +47,8 @@ MeasUncerts = {'sal_u': [0.001], 'temp_u': [0.3], 'phosphate_u': [0.14], 'nitrat
 EstDates_array = np.squeeze(data['G2year'][500:1000])
 EstDates = EstDates_array.tolist()
 
-Path = '/Users/lara/Documents/Python'
-             
+Path = ''  # paths fixed to work as relative from the location of this script
+
 EstimatesNN, UncertaintiesNN = PyESPER_NN(['DIC'], Path, OutputCoordinates, PredictorMeasurements, EstDates=EstDates, Equations=[1])
 EstimatesLIR, UncertaintiesLIR, CoefficientsLIR = PyESPER_LIR(['pH'], Path, OutputCoordinates, PredictorMeasurements, EstDates=EstDates, Equations=[1])
 EstimatesMixed, UncertaintiesMixed = PyESPER_Mixed(['phosphate', 'TA'], Path, OutputCoordinates, PredictorMeasurements, VerboseTF=True, EstDates=EstDates, MeasUncerts=MeasUncerts, Equations=[1, 2])
