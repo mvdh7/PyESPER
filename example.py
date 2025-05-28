@@ -3,6 +3,10 @@ import numpy as np
 import pandas as pd
 from scipy.io import loadmat
 
+from PyESPER.lir import PyESPER_LIR
+from PyESPER.mixed import PyESPER_Mixed
+from PyESPER.nn import PyESPER_NN
+
 data = loadmat("GLODAPv2.2022_Merged_Master_File.mat")
 
 latitude_array = np.squeeze(data["G2latitude"][500:1000])
