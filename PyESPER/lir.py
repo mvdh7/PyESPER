@@ -989,7 +989,7 @@ def PyESPER_LIR(DesiredVariables, Path, OutputCoordinates={}, PredictorMeasureme
                 elAo2, elBo2 = elAo, elBo
 
                 elIntCT2, elTo2 = process_list(elIntCT, elTo)
-                elIntCC2, elCo2 = process_list(elIntC, elCo)
+                elIntCC2, elCo2 = process_list(elIntCC, elCo)
                 
             elif is_key_14:
                 elIntCA2 = elIntCA
@@ -1176,7 +1176,7 @@ def PyESPER_LIR(DesiredVariables, Path, OutputCoordinates={}, PredictorMeasureme
     if "EstDates" in kwargs and ("DIC" in DesiredVariables or "pH" in DesiredVariables):      
         if not YouHaveBeenWarnedCanth:
             if VerboseTF:
-                print("Estimating anthropogenic carbon for PyESPER_NN.")
+                print("Estimating anthropogenic carbon for PyESPER_LIR.")
             longitude = np.mod(OutputCoordinates["longitude"], 360)
             latitude = np.array(OutputCoordinates["latitude"])
             depth = np.array(OutputCoordinates["depth"])
