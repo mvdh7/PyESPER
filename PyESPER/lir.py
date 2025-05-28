@@ -186,8 +186,8 @@ def PyESPER_LIR(
     """
 
     # Importing packages
-    import decimal
     import math
+    import os
     import time
 
     import matplotlib.path as mpltPath
@@ -680,11 +680,18 @@ def PyESPER_LIR(
 
         def fetch_data(DesiredVariables):
             for v in DesiredVariables:
-                P = Path
-                fname1 = f"{P}/PyESPER/full_Grid_LIRs/LIR_files_{v}_fullCs1.mat"
-                fname2 = f"{P}/PyESPER/full_Grid_LIRs/LIR_files_{v}_fullCs2.mat"
-                fname3 = f"{P}/PyESPER/full_Grid_LIRs/LIR_files_{v}_fullCs3.mat"
-                fname4 = f"{P}/PyESPER/full_Grid_LIRs/LIR_files_{v}_fullGrids.mat"
+                fname1 = os.path.join(
+                    Path, f"PyESPER/full_Grid_LIRs/LIR_files_{v}_fullCs1.mat"
+                )
+                fname2 = os.path.join(
+                    Path, f"PyESPER/full_Grid_LIRs/LIR_files_{v}_fullCs2.mat"
+                )
+                fname3 = os.path.join(
+                    Path, f"PyESPER/full_Grid_LIRs/LIR_files_{v}_fullCs3.mat"
+                )
+                fname4 = os.path.join(
+                    Path, f"PyESPER/full_Grid_LIRs/LIR_files_{v}_fullGrids.mat"
+                )
 
                 Cs1 = loadmat(fname1)
                 Cs2 = loadmat(fname2)

@@ -178,6 +178,7 @@ def PyESPER_NN(
 
     import importlib
     import math
+    import os
     import time
     from statistics import mean
 
@@ -707,9 +708,9 @@ def PyESPER_NN(
         # Loading the data
         def fetch_data(DesiredVariables):
             for v in DesiredVariables:
-                P = Path
-                fname = f"{P}/PyESPER/Uncertainty_Polys/NN_files_{v}_Unc_Poly.mat"  # Change this according to your path
-                name = f"NN_files_{v}_Unc_Poly"
+                fname = os.path.joinf(
+                    Path, "PyESPER/Uncertainty_Polys/NN_files_{v}_Unc_Poly.mat"
+                )
                 NNs = loadmat(fname)
                 Polys, UncGrid = NNs["Polys"][0][0], NNs["UncGrid"][0][0]
 
