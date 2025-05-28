@@ -1,32 +1,23 @@
 # %%
-import numpy as np
-import pandas as pd
-from scipy.io import loadmat
+import glodap
 
 from PyESPER.lir import PyESPER_LIR
 from PyESPER.mixed import PyESPER_Mixed
 from PyESPER.nn import PyESPER_NN
 
-data = loadmat("GLODAPv2.2022_Merged_Master_File.mat")
+data = glodap.atlantic()
 
-latitude_array = np.squeeze(data["G2latitude"][500:1000])
-latitude = latitude_array.tolist()
-longitude_array = np.squeeze(data["G2longitude"][500:1000])
-longitude = longitude_array.tolist()
-depth_array = np.squeeze(data["G2depth"][500:1000])
-depth = depth_array.tolist()
-salinity_array = np.squeeze(data["G2salinity"][500:1000])
-salinity = salinity_array.tolist()
-temperature_array = np.squeeze(data["G2temperature"][500:1000])
-temperature = temperature_array.tolist()
-phosphate_array = np.squeeze(data["G2phosphate"][500:1000])
-phosphate = phosphate_array.tolist()
-nitrate_array = np.squeeze(data["G2nitrate"][500:1000])
-nitrate = nitrate_array.tolist()
-silicate_array = np.squeeze(data["G2silicate"][500:1000])
-silicate = silicate_array.tolist()
-oxygen_array = np.squeeze(data["G2oxygen"][500:1000])
-oxygen = oxygen_array.tolist()
+L = slice(500, 1000)
+latitude = data[L].latitude.values.tolist()
+longitude = data[L].longitude.values.tolist()
+depth = data[L].depth.values.tolist()
+salinity = data[L].salinity.values.tolist()
+temperature = data[L].temperature.values.tolist()
+phosphate = data[L].phosphate.values.tolist()
+nitrate = data[L].nitrate.values.tolist()
+silicate = data[L].silicate.values.tolist()
+oxygen = data[L].oxygen.values.tolist()
+EstDates = data[L].year.values.tolist()
 
 OutputCoordinates = {}
 PredictorMeasurements = {}
@@ -53,8 +44,6 @@ MeasUncerts = {
     "oxygen_u": [0.025],
 }
 
-EstDates_array = np.squeeze(data["G2year"][500:1000])
-EstDates = EstDates_array.tolist()
 
 Path = "/Users/matthew/github/LarissaMDias/"
 
