@@ -221,29 +221,37 @@ def PyESPER_LIR(
             "Warning: Missing temperature measurements. Temperature is required when oxygen is provided."
         )
 
+    # Turn lists into numpy arrays
+    pm = PredictorMeasurements
+    for k, v in pm.items():
+        pm[k] = np.array(v)
+    oc = OutputCoordinates
+    for k, v in oc.items():
+        oc[k] = np.array(v)
+
     # Check temperature sanity and print a warning for out-of-range values
-    if "temperature" in PredictorMeasurements and any(
-        t < -5 or t > 50 for t in PredictorMeasurements["temperature"]
+    if "temperature" in PredictorMeasurements and np.any(
+        (pm["temperature"] < -5) | pm["temperature"] > 50
     ):
         print(
             "Warning: Temperatures below -5°C or above 50°C found. PyESPER is not designed for seawater with these properties. Ensure temperatures are in Celsius."
         )
 
-    if any(s < 5 or s > 50 for s in PredictorMeasurements["salinity"]):
+    if np.any((pm["salinity"] < 5) | pm["salinity"] > 50):
         print(
             "Warning: Salinities less than 5 or greater than 50 have been found. ESPER is not intended for seawater with these properties."
         )
 
-    if any(d < 0 for d in OutputCoordinates["depth"]):
+    if np.any(oc["depth"] < 0):
         print("Warning: Depth can not be negative.")
 
-    if any(l > 90 for l in OutputCoordinates["latitude"]):  # noqa
+    if np.any(oc["latitude"] > 90):
         print(
             "Warning: A latitude >90 deg (N or S) has been detected. Verify latitude is entered correctly as an input."
         )
 
     # Checking for commonly used missing data indicator flags. Consider adding your commonly used flags here.
-    if any(l == -9999 or l == -9 or l == -1e20 for l in OutputCoordinates["latitude"]):  # noqa
+    if np.any(np.isin(oc["latitude"], [-9999, -9, -1e20])):
         print(
             "Warning: A common non-NaN missing data indicator (e.g., -999, -9, -1e20) was detected in the input measurements provided. Missing data should be replaced with NaNs. Otherwise, ESPER will interpret your inputs at face value and give terrible estimates."
         )
@@ -259,18 +267,16 @@ def PyESPER_LIR(
 
     # Set EstDates based on kwargs, defaulting to 2002.0 if not provided
     if "EstDates" in kwargs:
-        d = np.array(kwargs["EstDates"])
-        EstDates = (
-            [item for sublist in [kwargs["EstDates"]] * (n + 1) for item in sublist]
-            if len(d) != n
-            else list(d)
-        )
+        EstDates = np.array(kwargs["EstDates"])
+        if len(kwargs["EstDates"]) != n:
+            # TODO presumably there should also be a check here that EstDates is scalar
+            EstDates = np.full(n, kwargs["EstDates"])
     else:
-        EstDates = [2002.0] * n
+        EstDates = np.full(n, 2002)  # TODO this might not need to be an array
 
     # Bookkeeping coordinates
     C = {}
-    longitude = np.array(OutputCoordinates["longitude"])
+    longitude = OutputCoordinates["longitude"]
     longitude[longitude > 360] = np.remainder(longitude[longitude > 360], 360)
     longitude[longitude < 0] = longitude[longitude < 0] + 360
     C["longitude"] = longitude
@@ -304,7 +310,7 @@ def PyESPER_LIR(
                 )
                 dresult = result
             else:
-                result = np.tile("nan", n)
+                result = np.tile(np.nan, n)
                 dresult = np.tile(0, n)
         return result, dresult
 
@@ -459,25 +465,19 @@ def PyESPER_LIR(
         ]
         if "oxygen" in PredictorMeasurements:
             oxyg = np.array(PredictorMeasurements["oxygen"])
-            oxyg_sw = sw.satO2(salinity, temp_sw) * 44.6596 - (oxyg)
+            oxyg_sw = sw.satO2(salinity, temp_sw) * 44.6596 - oxyg
         else:
-            oxyg_sw = np.tile("nan", n)
-        for i in range(len(oxyg_sw)):
-            if oxyg_sw[i] != "nan" and -0.0001 < oxyg_sw[i] < 0.0001:
-                oxyg_sw[i] = 0
-        oxygen_processed = ["{:.5g}".format(o) if o != "nan" else o for o in oxyg_sw]
+            oxyg_sw = np.tile(np.nan, n)
+        oxyg_sw[np.abs(oxyg_sw) < 0.0001] = 0
+        oxygen_processed = ["{:.5g}".format(o) if ~np.isnan(o) else o for o in oxyg_sw]
         # Process predictor measurements
         processed_measurements = {}
         for param in ["phosphate", "nitrate", "silicate"]:
             processed_measurements[param] = (
                 np.array(PredictorMeasurements[param])
                 if param in PredictorMeasurements
-                else np.tile("nan", n)
+                else np.tile(np.nan, n)
             )
-
-        phosphate_processed = processed_measurements["phosphate"]
-        nitrate_processed = processed_measurements["nitrate"]
-        silicate_processed = processed_measurements["silicate"]
 
         if not PerKgSwTF:
             densities = (
@@ -486,42 +486,38 @@ def PyESPER_LIR(
             )
             for nutrient in ["phosphate", "nitrate", "silicate"]:
                 if nutrient in PredictorMeasurements:
-                    globals()[f"{nutrient}_processed"] /= densities
+                    processed_measurements[nutrient] /= densities
 
         EqsString = [str(e) for e in Equations]
 
-        NeededForProperty = pd.DataFrame(
-            {
-                "TA": [1, 2, 4, 6, 5],
-                "DIC": [1, 2, 4, 6, 5],
-                "pH": [1, 2, 4, 6, 5],
-                "phosphate": [1, 2, 4, 6, 5],
-                "nitrate": [1, 2, 3, 6, 5],
-                "silicate": [1, 2, 3, 6, 4],
-                "oxygen": [1, 2, 3, 4, 5],
-            }
-        )
+        NeededForProperty = {
+            "TA": [1, 2, 4, 6, 5],
+            "DIC": [1, 2, 4, 6, 5],
+            "pH": [1, 2, 4, 6, 5],
+            "phosphate": [1, 2, 4, 6, 5],
+            "nitrate": [1, 2, 3, 6, 5],
+            "silicate": [1, 2, 3, 6, 4],
+            "oxygen": [1, 2, 3, 4, 5],
+        }
 
-        VarVec = pd.DataFrame(
-            {
-                "1": [1, 1, 1, 1, 1],
-                "2": [1, 1, 1, 0, 1],
-                "3": [1, 1, 0, 1, 1],
-                "4": [1, 1, 0, 0, 1],
-                "5": [1, 1, 1, 1, 0],
-                "6": [1, 1, 1, 0, 0],
-                "7": [1, 1, 0, 1, 0],
-                "8": [1, 1, 0, 0, 0],
-                "9": [1, 0, 1, 1, 1],
-                "10": [1, 0, 1, 0, 1],
-                "11": [1, 0, 0, 1, 1],
-                "12": [1, 0, 0, 0, 1],
-                "13": [1, 0, 1, 1, 0],
-                "14": [1, 0, 1, 0, 0],
-                "15": [1, 0, 0, 1, 0],
-                "16": [1, 0, 0, 0, 0],
-            }
-        )
+        VarVec = {
+            "1": [1, 1, 1, 1, 1],
+            "2": [1, 1, 1, 0, 1],
+            "3": [1, 1, 0, 1, 1],
+            "4": [1, 1, 0, 0, 1],
+            "5": [1, 1, 1, 1, 0],
+            "6": [1, 1, 1, 0, 0],
+            "7": [1, 1, 0, 1, 0],
+            "8": [1, 1, 0, 0, 0],
+            "9": [1, 0, 1, 1, 1],
+            "10": [1, 0, 1, 0, 1],
+            "11": [1, 0, 0, 1, 1],
+            "12": [1, 0, 0, 0, 1],
+            "13": [1, 0, 1, 1, 0],
+            "14": [1, 0, 1, 0, 0],
+            "15": [1, 0, 0, 1, 0],
+            "16": [1, 0, 0, 0, 0],
+        }
 
         product, product_processed, name = [], [], []
         need, precode = {}, {}
@@ -560,9 +556,15 @@ def PyESPER_LIR(
                 prodnptile[v][prodnptile[v] == "0"] = "nan"
                 prodnptile[v][prodnptile[v] == "1"] = salinity[v]
                 prodnptile[v][prodnptile[v] == "2"] = temperature_processed[v]
-                prodnptile[v][prodnptile[v] == "3"] = phosphate_processed[v]
-                prodnptile[v][prodnptile[v] == "4"] = nitrate_processed[v]
-                prodnptile[v][prodnptile[v] == "5"] = silicate_processed[v]
+                prodnptile[v][prodnptile[v] == "3"] = processed_measurements[
+                    "phosphate"
+                ][v]
+                prodnptile[v][prodnptile[v] == "4"] = processed_measurements["nitrate"][
+                    v
+                ]
+                prodnptile[v][prodnptile[v] == "5"] = processed_measurements[
+                    "silicate"
+                ][v]
                 prodnptile[v][prodnptile[v] == "6"] = oxygen_processed[v]
                 product_processed.append(prodnptile)
 

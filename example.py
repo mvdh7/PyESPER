@@ -47,14 +47,14 @@ MeasUncerts = {
 
 Path = ""
 
-EstimatesNN, UncertaintiesNN = PyESPER_NN(
-    ["DIC"],
-    Path,
-    OutputCoordinates,
-    PredictorMeasurements,
-    EstDates=EstDates,
-    Equations=[1],
-)
+# EstimatesNN, UncertaintiesNN = PyESPER_NN(
+#     ["DIC"],
+#     Path,
+#     OutputCoordinates,
+#     PredictorMeasurements,
+#     EstDates=EstDates,
+#     Equations=[1],
+# )
 EstimatesLIR, UncertaintiesLIR, CoefficientsLIR = PyESPER_LIR(
     ["pH"],
     Path,
@@ -63,14 +63,14 @@ EstimatesLIR, UncertaintiesLIR, CoefficientsLIR = PyESPER_LIR(
     EstDates=EstDates,
     Equations=[1],
 )
-EstimatesMixed, UncertaintiesMixed = PyESPER_Mixed(
-    ["phosphate", "TA"],
-    Path,
-    OutputCoordinates,
-    PredictorMeasurements,
-    VerboseTF=True,
-    EstDates=EstDates,
-    MeasUncerts=MeasUncerts,
-    Equations=[1, 2],
-)
-print(EstimatesNN[90:100], UncertaintiesLIR[10:20], EstimatesMixed[0:10])
+# EstimatesMixed, UncertaintiesMixed = PyESPER_Mixed(
+#     ["phosphate", "TA"],
+#     Path,
+#     OutputCoordinates,
+#     PredictorMeasurements,
+#     VerboseTF=True,
+#     EstDates=EstDates,
+#     MeasUncerts=MeasUncerts,
+#     Equations=[1, 2],
+# )
+# print(EstimatesNN[90:100], UncertaintiesLIR[10:20], EstimatesMixed[0:10])
