@@ -26,7 +26,7 @@ def PyESPER_LIR(
      ESPER_NN is inspired by CANYON-B, which also uses neural networks:
      Bittig et al. 2018: https://doi.org/10.3389/fmars.2018.00328
 
-     This function needs numpy, scipy, pandas, math, matplotlib, importlib, and statistics packages. The seawater package is required if
+     This function needs numpy, scipy, pandas, matplotlib, importlib, and statistics packages. The seawater package is required if
      measurements are provided in molar units or if potential temperature or AOU are needed but not provided by the user.  Scale differences from
      TEOS-10 are a negligible component of alkalinity estimate error. PyCO2SYS is required if pH on the total scale is a desired output variable.
 
@@ -186,7 +186,6 @@ def PyESPER_LIR(
     """
 
     # Importing packages
-    import math
     import os
     import time
 
@@ -1561,8 +1560,7 @@ def PyESPER_LIR(
 
         # Adjust for estimation dates
         CantMeas = [
-            c * math.exp(0.018989 * (date - 2002))
-            for c, date in zip(Cant2002, EstDates)
+            c * np.exp(0.018989 * (date - 2002)) for c, date in zip(Cant2002, EstDates)
         ]
 
         return CantMeas, Cant2002
@@ -1584,7 +1582,7 @@ def PyESPER_LIR(
             dic = []
             if combo.startswith("DIC"):
                 for vala, Canta, Cant2002a in zip(a, Cant, Cant2002):
-                    if math.isnan(vala):
+                    if np.isnan(vala):
                         dic.append("nan")
                     else:
                         dic.append(vala + Canta - Cant2002a)
