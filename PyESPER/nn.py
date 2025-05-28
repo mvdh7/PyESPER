@@ -844,8 +844,8 @@ def PyESPER_NN(
                 netname = ["1", "2", "3", "4"]
                 netstimateAtl, netstimateOther = [], []
                 for n in range(1, 5):
-                    fOName = f"ESPER_{v}_{e}_Other_{n}"
-                    fAName = f"ESPER_{v}_{e}_Atl_{n}"
+                    fOName = f"NeuralNetworks.ESPER_{v}_{e}_Other_{n}"
+                    fAName = f"NeuralNetworks.ESPER_{v}_{e}_Atl_{n}"
                     moda = importlib.import_module(fAName)
                     modo = importlib.import_module(fOName)
                     from importlib import reload
