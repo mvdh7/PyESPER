@@ -11,6 +11,13 @@ def PyESPER_Mixed(DesiredVariables, Path, OutputCoordinates={}, PredictorMeasure
     Please send questions or related requests about PyESPER to lmdias@uw.edu.
     ************************************************************************* 
     """
+    import time
+
+    import numpy as np
+    import pandas as pd
+
+    from .lir import PyESPER_LIR
+    from .nn import PyESPER_NN
     
     tic = time.perf_counter()
 
